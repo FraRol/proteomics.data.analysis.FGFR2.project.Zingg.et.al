@@ -366,10 +366,10 @@ Heatmap(corr2,
         top_annotation = ha.fr,
         col = FR.heatmap.colors.2,
         
-        clustering_distance_rows = function(m) as.dist((1-m)/2), #"euclidean"
+        clustering_distance_rows = function(m) as.dist((1-m)/2), 
         clustering_method_rows = "ward.D2",
         
-        clustering_distance_columns = function(m) as.dist((1-m)/2), #"euclidean",
+        clustering_distance_columns = function(m) as.dist((1-m)/2), 
         clustering_method_columns = "ward.D2",
         
         column_dend_height = unit(40, "mm"),

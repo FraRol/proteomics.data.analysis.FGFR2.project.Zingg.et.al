@@ -1195,10 +1195,10 @@ Heatmap(corr2,
         top_annotation = ha.fr,
         col = FR.heatmap.colors.2,
         
-        clustering_distance_rows = function(m) as.dist((1-m)/2), #"euclidean"
+        clustering_distance_rows = function(m) as.dist((1-m)/2), 
         clustering_method_rows = "ward.D2",
         
-        clustering_distance_columns = function(m) as.dist((1-m)/2), #"euclidean",
+        clustering_distance_columns = function(m) as.dist((1-m)/2), 
         clustering_method_columns = "ward.D2",
         
         column_dend_height = unit(40, "mm"),
@@ -1352,7 +1352,7 @@ write_gct(gene.pattern.PTM.SEA.input_GCT.2, "cells.IMAC.mouse.windows.zero.imput
 ### analyze PTMSEA output from GenePattern ####################################################################################################################################
 
 ## load PTMSEA result cells IMAC mouse windows
-#NES is named Norm.Intensity.X here (just like the input columns)
+#NES is named Norm.Intensity.[...] here (just like the input columns)
 ss.PTMSEA.result <- fread("cells.IMAC.mouse.windows.zero.imputed.ssPTMSEA.combined.result.txt")
 
 glimpse(ss.PTMSEA.result)

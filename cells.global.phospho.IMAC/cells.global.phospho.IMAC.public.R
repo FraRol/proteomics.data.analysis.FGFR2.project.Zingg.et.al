@@ -1380,6 +1380,7 @@ nrow(ss.PTMSEA.result) #37
 # O	19	Fgfr2-dE18-Bicc1
 # T	20	Fgfr2-dE18-Bicc1
 
+#calculate some measures
 for(i in 1:nrow(ss.PTMSEA.result)){
   print(i)
   

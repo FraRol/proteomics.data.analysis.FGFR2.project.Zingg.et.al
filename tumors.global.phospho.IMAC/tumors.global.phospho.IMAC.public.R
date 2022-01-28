@@ -1950,7 +1950,7 @@ glimpse(ss.PTMSEA.result.EG.Tiox.tum.NT)
 ss.PTMSE.global.phospho.DZ.EG.comb <- merge(ss.PTMSEA.result.DZ.IMAC.tum %>% select(id, Norm.Intensity.A : Norm.Intensity.Z), ss.PTMSEA.result.EG.Tiox.tum.NT %>% select(id, Int.1_2 : Int.51_52), by.x = "id", by.y = "id", all.x = T, all.y = T, sort = F)
 glimpse(ss.PTMSE.global.phospho.DZ.EG.comb)
 
-### count data prsence and calculate some measures
+### count data presence and calculate some measures
 #samples DZ (FGFR2) 32; samples EG (KB1P): 24
 
 ss.PTMSE.global.phospho.DZ.EG.comb$data.presence.DZ <- apply(ss.PTMSE.global.phospho.DZ.EG.comb[, c("Norm.Intensity.A",  "Norm.Intensity.N",  "Norm.Intensity.F",  "Norm.Intensity.R",  "Norm.Intensity.D",  "Norm.Intensity.P",  "Norm.Intensity.AB",

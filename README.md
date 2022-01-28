@@ -4,4 +4,4 @@ R scripts used for the analysis of proteomic and phosphoproteomic data for the t
 You will find the scripts for the analysis of cell and tumor data as well as outputs, results and overviews for sample names.
 
 #### Overview of proteomics experiments
-![overview proteomics experiments](overview.proteomics.experiments.FGFR2.project.jpg "overview proteomics experiments")
+![overview proteomics experiments](overview.proteomics.experiments.FGFR2.project.2.jpg "overview proteomics experiments")

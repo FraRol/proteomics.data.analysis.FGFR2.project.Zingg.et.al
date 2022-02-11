@@ -107,9 +107,7 @@ load("DZ.IP.tum.labels.Rdata")
 glimpse(DZ.IP.tum.labels)
 
 
-## phosphodata MQ _ Version FR _ no GFP and no FGFR2 variant FASTA  _ newer 2021/101 mouse FASTA file, MQ v2.0.3.0
-#IP.tum.DZ <- fread("/Users/frankrolfs/NLPostDR/VUmc OPL/Phosphoproteomics with Daniel Zingg NKI/mouse tumors/pTyrIP.mouse.tumors.DZ/QE3_210824_OPL1025_FR_pTyrIP_FGFR2_mouse_tumor_byFR_noGFP_noVariants 01.12.2021/Phospho (STY)Sites.txt",integer64 = "numeric") #
-
+#load data
 IP.tum.DZ <- fread("tumors.pTyrIP.Phospho(STY)Sites.txt",integer64 = "numeric") #
 glimpse(IP.tum.DZ)
 
@@ -286,7 +284,7 @@ IP.tum.DZ.3.samples.order <- c(
 IP.tum.DZ.3.samples.order
 
 # calculate percentage MV PS all classes level
-nrow(IP.tum.DZ.3)  #464 = total number PS
+nrow(IP.tum.DZ.3)  #4464 = total number PS
 
 result.PS.count.IP.tum.DZ.3$percentageMV <- pbsapply(result.PS.count.IP.tum.DZ.3$nMVs, function(x) (100*x)/4464)
 result.PS.count.IP.tum.DZ.3

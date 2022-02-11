@@ -141,12 +141,7 @@ PerseusPSexpand.17.02.21 <- function(DF1){
 load("DZ.IMAC.tum.labels.Rdata")
 glimpse(DZ.IMAC.tum.labels)
 
-#load global phospho data IMAC tumors
-#IMAC.tum.DZ <- fread("/Users/frankrolfs/NLPostDR/VUmc OPL/Phosphoproteomics with Daniel Zingg NKI/mouse tumors/QE3_210803_OPL1025_FR_mouse_tumor_IMAC_byFR/Phospho (STY)Sites.txt",integer64 = "numeric") #
-#save(IMAC.tum.DZ, file = "/Users/frankrolfs/GitHubFR/proteomics.truncated.FGFR2.is.oncogene.cancer.Zingg.et.al copy 20.01.22_22.40/tumors.global.phospho.IMAC_/tumors.IMAC.Phospho(STY)Sites.Rdata")
-
-#IMAC.tum.DZ <- fread("tumors.IMAC.Phospho(STY)Sites.txt",integer64 = "numeric") #
-#load("/Users/frankrolfs/GitHubFR/proteomics.truncated.FGFR2.is.oncogene.cancer.Zingg.et.al copy 20.01.22_22.40/tumors.global.phospho.IMAC_/tumors.IMAC.Phospho(STY)Sites.Rdata") #20.1.22_23.50
+# load data
 load("tumors.IMAC.Phospho(STY)Sites.Rdata")
 glimpse(IMAC.tum.DZ)
 

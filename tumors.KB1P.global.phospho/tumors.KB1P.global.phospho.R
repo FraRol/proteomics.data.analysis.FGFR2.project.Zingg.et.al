@@ -100,16 +100,6 @@ PerseusPSexpand.17.02.21 <- function(DF1){
 #####################################################################################################################################################################
 ### load data KB1P tumors global phospho DDA from MaxQuant Phospho(STY)Sites.txt
 
-#/Users/frankrolfs/NLPostDR/NKI/EWA Phosphoproteomics with OPL/EWA Raw Data Thang version 10.2015/QE2_150602_OPL1005_EG_TiOx_BRCA_mouse Phospho (STY)Sites.txt
-#/Users/frankrolfs/NLPostDR/NKI/EWA Phosphoproteomics with OPL/Ewa Tiox Evidence txt file/txt-tiox-28Sep2015/Phospho (STY)Sites.txt
-
-##Tiox.Ewa.ms.tums <- fread("/Users/frankrolfs/NLPostDR/NKI/EWA Phosphoproteomics with OPL/Ewa Tiox Evidence txt file/txt-tiox-28Sep2015/Phospho (STY)Sites.txt",integer64 = "numeric") #
-##glimpse(Tiox.Ewa.ms.tums)
-
-#Tiox.Ewa.ms.tums <- fread("tumors.KB1P.Phospho(STY)Sites.txt",integer64 = "numeric") #
-#glimpse(Tiox.Ewa.ms.tums)
-#save(Tiox.Ewa.ms.tums, file = "Tiox.Ewa.ms.tums.Rdata")
-
 load("Tiox.Ewa.ms.tums.Rdata")
 glimpse(Tiox.Ewa.ms.tums)
 

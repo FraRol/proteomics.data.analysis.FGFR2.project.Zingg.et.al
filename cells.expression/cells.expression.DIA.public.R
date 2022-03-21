@@ -29,17 +29,6 @@ library(viridis)
 
 ###################################################################################################################################
 
-## 3: Franks Spectronaut run 25.10.2021: 
-## BGS standard settings, no GFP FASTA. no Fgfr2 cell variant FASTA,  NO SN imputation, quantification SNmaxlfq, report by FR PG level (filtered analysis review yes), no irt library
-## spectral library from direct DIA AND MQ search DDA, FASTA Swissprot mus musculus reviewed downloaded 10.2021
-## 25.11.2021
-
-DZ.cells.expr <- fread("/Volumes/Blackberra/25.10.2021_Zingg_Fgfr2_cells_DIA_noGFP_noFgfr2Variants_byFR_Report_long_PG_filter_analysis_review.xls",
-                       integer64="numeric",
-                       header=TRUE,
-                       dec=","
-)
-
 ### load expresion data cells DIA Zingg
 load("Zingg.cells.expression.DIA.Spectronaut.report.long.Rdata")
 glimpse(DZ.cells.expr)

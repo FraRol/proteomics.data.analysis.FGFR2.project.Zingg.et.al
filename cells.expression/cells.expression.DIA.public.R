@@ -26,6 +26,10 @@ library(pbapply)
 library(ComplexHeatmap)
 library(circlize)
 library(viridis)
+library(cmapR)
+library(msigdbr)
+library(gtools)
+library(paletteer)
 
 ###################################################################################################################################
 
@@ -515,10 +519,294 @@ ggplot( melted.EXPR.mtplplot.data.3 , aes(x=variable, y=PG.Genes, fill=value)) +
 
 
 
+#################################################################################################################################
+### ssGSEA
+
+#get data and reshape for ssGSEA
+glimpse(DZ.cells.expr.2.PG.wide)
+
+input.ssGSEA <- DZ.cells.expr.2.PG.wide
+glimpse(input.ssGSEA)
+
+input.ssGSEA$GFP.1 <- pbapply(input.ssGSEA[, c("GFP.1_A", "GFP.1_B", "GFP.1_C")], 1, function(x) mean(x))
+input.ssGSEA$GFP.2 <- pbapply(input.ssGSEA[, c("GFP.2_A", "GFP.2_B", "GFP.2_C")], 1, function(x) mean(x))
+input.ssGSEA$GFP.3 <- pbapply(input.ssGSEA[, c("GFP.3_A", "GFP.3_B", "GFP.3_C")], 1, function(x) mean(x))
+input.ssGSEA$GFP.4 <- pbapply(input.ssGSEA[, c("GFP.4_A", "GFP.4_B", "GFP.4_C")], 1, function(x) mean(x))
+
+input.ssGSEA$FL.1 <- pbapply(input.ssGSEA[, c("Fgfr2-FL.5_A", "Fgfr2-FL.5_B", "Fgfr2-FL.5_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.2 <- pbapply(input.ssGSEA[, c("Fgfr2-FL.6_A", "Fgfr2-FL.6_B", "Fgfr2-FL.6_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.3 <- pbapply(input.ssGSEA[, c("Fgfr2-FL.7_A", "Fgfr2-FL.7_B", "Fgfr2-FL.7_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.4 <- pbapply(input.ssGSEA[, c("Fgfr2-FL.8_A", "Fgfr2-FL.8_B", "Fgfr2-FL.8_C")], 1, function(x) mean(x))
+
+input.ssGSEA$dE18.1 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18.9_A", "Fgfr2-dE18.9_B", "Fgfr2-dE18.9_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.2 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18.10_A", "Fgfr2-dE18.10_B", "Fgfr2-dE18.10_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.3 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18.11_A", "Fgfr2-dE18.11_B", "Fgfr2-dE18.11_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.4 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18.12_A", "Fgfr2-dE18.12_B", "Fgfr2-dE18.12_C")], 1, function(x) mean(x))
+
+input.ssGSEA$FL.Bicc1.1 <- pbapply(input.ssGSEA[, c("Fgfr2-FL-Bicc1.13_A", "Fgfr2-FL-Bicc1.13_B", "Fgfr2-FL-Bicc1.13_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.Bicc1.2 <- pbapply(input.ssGSEA[, c("Fgfr2-FL-Bicc1.14_A", "Fgfr2-FL-Bicc1.14_B", "Fgfr2-FL-Bicc1.14_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.Bicc1.3 <- pbapply(input.ssGSEA[, c("Fgfr2-FL-Bicc1.15_A", "Fgfr2-FL-Bicc1.15_B", "Fgfr2-FL-Bicc1.15_C")], 1, function(x) mean(x))
+input.ssGSEA$FL.Bicc1.4 <- pbapply(input.ssGSEA[, c("Fgfr2-FL-Bicc1.16_A", "Fgfr2-FL-Bicc1.16_B", "Fgfr2-FL-Bicc1.16_C")], 1, function(x) mean(x))
+
+input.ssGSEA$dE18.Bicc1.1 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18-Bicc1.17_A", "Fgfr2-dE18-Bicc1.17_B", "Fgfr2-dE18-Bicc1.17_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.Bicc1.2 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18-Bicc1.18_A", "Fgfr2-dE18-Bicc1.18_B", "Fgfr2-dE18-Bicc1.18_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.Bicc1.3 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18-Bicc1.19_A", "Fgfr2-dE18-Bicc1.19_B", "Fgfr2-dE18-Bicc1.19_C")], 1, function(x) mean(x))
+input.ssGSEA$dE18.Bicc1.4 <- pbapply(input.ssGSEA[, c("Fgfr2-dE18-Bicc1.20_A", "Fgfr2-dE18-Bicc1.20_B", "Fgfr2-dE18-Bicc1.20_C")], 1, function(x) mean(x))
+
+glimpse(input.ssGSEA)
+
+# pick first gene name
+input.ssGSEA$PG.Genes.2 <- pbsapply(input.ssGSEA$PG.Genes, function(x)  unlist(str_split(string = x, pattern = ";"))[1])
+glimpse(input.ssGSEA)
+
+# remove possible NAs in gene names and if gene is duplicated use min rowsum entry
+table(input.ssGSEA$PG.Genes.2 =="")
+input.ssGSEA <- input.ssGSEA %>% filter(PG.Genes.2 !="")
+
+#inspect duplicated observations
+duplicated.observations <- input.ssGSEA  %>% count(PG.Genes.2) %>% filter(n > 1) 
+glimpse(duplicated.observations)
+duplicated.observations
+
+unique.genes.in.list <- unique(input.ssGSEA$PG.Genes.2)
+unique.genes.in.list
+
+
+input.ssGSEA.2 <- c()
+for(i in unique.genes.in.list){
+  print(i)
+  temp.obs <- as.data.frame(filter(input.ssGSEA, PG.Genes.2 %in% c(i)))
+  temp.obs$sum.int.samples <-apply(temp.obs[,c("GFP.1","GFP.2","GFP.3","GFP.4",  "FL.1","FL.2","FL.3","FL.4",  "dE18.1","dE18.2","dE18.3","dE18.4",  "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4")], 1, function(x) sum(x))
+  temp.obs <- temp.obs[order(desc(temp.obs$sum.int.samples)),]
+  temp.obs <- temp.obs[1,]
+  input.ssGSEA.2 <- bind_rows(input.ssGSEA.2, temp.obs) 
+}
+glimpse(input.ssGSEA.2) #6038
+
+#select columns of interest and log2 transform
+input.ssGSEA.3a <- input.ssGSEA.2 %>% select(PG.Genes.2)
+input.ssGSEA.3b <- log2(input.ssGSEA.2 %>% select("GFP.1","GFP.2","GFP.3","GFP.4",  "FL.1","FL.2","FL.3","FL.4",  "dE18.1","dE18.2","dE18.3","dE18.4",  "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4"))
+input.ssGSEA.3 <- bind_cols(input.ssGSEA.3a, input.ssGSEA.3b)
+glimpse(input.ssGSEA.3)
+
+
+# prepare gct file 
+gene.pattern.ssGSEA.input_GCT <-input.GSVA.ssGSEA.3[,c("GFP.1","GFP.2","GFP.3","GFP.4",  
+                                                       "FL.1","FL.2","FL.3","FL.4",  
+                                                       "dE18.1","dE18.2","dE18.3","dE18.4",  
+                                                       "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   
+                                                       "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4")]
+glimpse(gene.pattern.ssGSEA.input_GCT)
+
+gene.pattern.ssGSEA.input_GCT <- as.matrix(gene.pattern.ssGSEA.input_GCT[,c("GFP.1","GFP.2","GFP.3","GFP.4",  
+                                                                            "FL.1","FL.2","FL.3","FL.4",  
+                                                                            "dE18.1","dE18.2","dE18.3","dE18.4",  
+                                                                            "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   
+                                                                            "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4")])
+  
+
+table(is.na(gene.pattern.ssGSEA.input_GCT))
+gene.pattern.ssGSEA.input_GCT[is.na(gene.pattern.ssGSEA.input_GCT)] <- 0 #impute missing values with zero
+
+
+rownames(gene.pattern.ssGSEA.input_GCT) <- input.GSVA.ssGSEA.3$PG.Genes.2 #add row names
+glimpse(gene.pattern.ssGSEA.input_GCT)
+
+
+gene.pattern.ssGSEA.input_GCT.2 <- new("GCT", mat=gene.pattern.ssGSEA.input_GCT)
+glimpse(gene.pattern.ssGSEA.input_GCT.2)
+
+#save GCT file for ssGSEA input
+write_gct(gene.pattern.ssGSEA.input_GCT.2, "cells.expr.ssGSEA_input.a",ver = 2) # use file, add column "Description" in e.g. Excel and adjust column names accordingly to make file compatible => see file  "cells.expr.ssGSEA_input.b_n20x6038.gct"
+
+
+## prepare gene sets database file (gmt) for Hallmarks from Msigdb via msigdbr package
+packageVersion("msigdbr")
+msigdbr_species() #list the species available in the msigdbr package
+print(msigdbr_collections(), n=23) #show the available collections
+
+#use Hallmark "H" gene sets Mus musculus
+MsigDBofinterest <- msigdbr(species = "mouse", category = "H")
+glimpse(MsigDBofinterest)
+table(MsigDBofinterest$gs_cat)
+table(MsigDBofinterest$gs_subcat)
+unique(MsigDBofinterest$gs_name)
+
+
+all.geneset.names <- unique(MsigDBofinterest$gs_name)
+glimpse(all.geneset.names)
+
+# reshape pathway definitions to list
+pathway.list.with.ids <- c()
+for(i in all.geneset.names){
+  print(i)
+  temp <- MsigDBofinterest %>% filter(gs_name %in% i)
+  out <- list("pathway.name" = temp$gene_symbol)
+  names(out) <- i
+  pathway.list.with.ids <- append(pathway.list.with.ids, out)
+}
+glimpse(pathway.list.with.ids)
+
+
+##write pathways gmt file see https://github.com/lwaldron/LeviRmisc/blob/master/R/writeGMT.R
+
+# start define function
+writeGMT <- function #Create a gmt (gene matrix transposed) file
+### Createss a gmt (gene matrix transposed) file such as those
+### provided by mSigDB or geneSigDB, from an R list object.
+### Function by Levi Waldron.
+(object,
+ ### R list object that will be converted to GMT file.  Each element
+ ### should contain a vector of gene names, and the names of the
+ ### elements will used for the gene set names
+ fname
+ ### Output file name for .gmt file
+){
+  if (class(object) != "list") stop("object should be of class 'list'")
+  if(file.exists(fname)) unlink(fname)
+  for (iElement in 1:length(object)){
+    write.table(t(c(make.names(rep(names(object)[iElement],2)),object[[iElement]])),
+                sep="\t",quote=FALSE,
+                file=fname,append=TRUE,col.names=FALSE,row.names=FALSE)
+  }
+  ### Called for the effect of writing a .gmt file
+}
+# stop define function
+
+
+writeGMT(pathway.list.with.ids, "msigdbr_mouse_hallmarks_.gmt")
 
 
 
+###perform analysis via cloud.genepattern.org => ssGSEA module v10.0.11, standard settings
 
+
+
+### load ssGSEA result from gene pattern and visualize
+
+ssGSEA_result.df <- fread("cells.expr.ssGSEA_result.txt") 
+glimpse(ssGSEA_result.df)
+
+
+#calculate some measures
+for(i in 1:nrow(ssGSEA_result.df)){
+  print(i)
+  
+  #FL vs dE18 t.test
+  tempB <- t.test(as.numeric(ssGSEA_result.df[i, c("FL.1","FL.2","FL.3","FL.4")]),
+                  as.numeric(ssGSEA_result.df[i, c("dE18.1","dE18.2","dE18.3","dE18.4")]))
+  ssGSEA_result.df$FL_dE18_t.test.pval[i] <- tempB$p.value
+  
+}
+glimpse(ssGSEA_result.df)
+
+#p.adjust
+ssGSEA_result.df$FL_dE18_t.test.pval.adj.BH <- p.adjust(ssGSEA_result.df$FL_dE18_t.test.pval, "BH")
+
+table(ssGSEA_result.df$FL_dE18_t.test.pval < 0.05)
+
+# change column names, filter sign. observations, 
+
+colnames(ssGSEA_result.df) <- c("pathways",                "Description",         "GFP.1",                "GFP.2" ,               "GFP.3",               
+                          "GFP.4"     ,           "FL.1"   ,              "FL.2"  ,               "FL.3"   ,              "FL.4"   ,             
+                          "dE18.1"   ,            "dE18.2"     ,          "dE18.3"      ,         "dE18.4"   ,            "FL.Bicc1.1"  ,        
+                          "FL.Bicc1.2"   ,        "FL.Bicc1.3"        ,   "FL.Bicc1.4" ,          "dE18.Bicc1.1"  ,       "dE18.Bicc1.2"  ,      
+                          "dE18.Bicc1.3"   ,      "dE18.Bicc1.4"    ,    "FL_dE18_t.test.pval", "FL_dE18_t.test.pval.adj.BH")
+
+### ggplot heatmap
+sign.ssGSEA.result <- ssGSEA_result.df %>% filter(FL_dE18_t.test.pval < 0.05 ) 
+nrow(sign.ssGSEA.result) #18
+
+custom.order.mouse.ssGSEA <- c("HALLMARK_KRAS_SIGNALING",
+                               "HALLMARK_KRAS_SIGNALING_UP",
+                               "HALLMARK_PI3K_AKT_MTOR_SIGNALING",
+                               "HALLMARK_MTORC1_SIGNALING",
+                               "HALLMARK_MYC_TARGETS_V1",
+                               "HALLMARK_TNFA_SIGNALING_VIA_NFKB",
+                               "HALLMARK_TGF_BETA_SIGNALING",
+                               "HALLMARK_WNT_BETA_CATENIN_SIGNALING",
+                               "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION",
+                               "HALLMARK_ANGIOGENESIS",
+                               "HALLMARK_ESTROGEN_RESPONSE_EARLY",
+                               "HALLMARK_ANDROGEN_RESPONSE",
+                               "HALLMARK_UNFOLDED_PROTEIN_RESPONSE",
+                               "HALLMARK_CHOLESTEROL_HOMEOSTASIS",
+                               "HALLMARK_APICAL_SURFACE",
+                               "HALLMARK_INTERFERON_GAMMA_RESPONSE",
+                               "HALLMARK_INTERFERON_ALPHA_RESPONSE",
+                               "HALLMARK_HEDGEHOG_SIGNALING")   
+custom.order.mouse.ssGSEA
+
+### z-score result
+
+#start define functions
+zscorescalebaseR<- function(x){
+  #arg <- c(1, 2, 3, 4, 5)
+  #temp <- (x-mean(x))/sd(x)
+  temp <- (x-mean(x))/sd(x)
+  return(temp)
+}
+x <- c(1, 2, 3, 4, 5); x
+zscorescalebaseR(x = x)
+mean(zscorescalebaseR(x = x))
+#stop define functions
+
+A <- sign.ssGSEA.result %>% select(GFP.1    : dE18.Bicc1.4 )
+A <- t(apply(A,1, function(x) zscorescalebaseR(x = x)))
+
+sd(A[1,]) #should be 1
+
+B <- as_tibble(A)
+
+sign.ssGSEA.result <- bind_cols(sign.ssGSEA.result %>% select(pathways), B) #with z score
+glimpse(sign.ssGSEA.result)
+
+
+#reshape for plot
+melted.ssGSEA.result <- reshape2::melt(sign.ssGSEA.result %>% select("pathways",  
+                                                                     "GFP.1","GFP.2","GFP.3","GFP.4",  
+                                                                     "FL.1","FL.2","FL.3","FL.4",  
+                                                                     "dE18.1","dE18.2","dE18.3","dE18.4",  
+                                                                     "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   
+                                                                     "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4"))
+glimpse(melted.ssGSEA.result)
+
+#plot
+
+ggplot(melted.ssGSEA.result, aes(x=variable, y=pathways, fill=value)) +  
+  geom_tile() + 
+  #scale_fill_gradient2(low = "blue", mid = "white",high = "red") + #color A
+  #scale_fill_gradient2(low = "blue", mid = "white",high = "darkred") + #color B
+  #scale_fill_scico(palette = 'vikO',name="score", na.value = "grey50")+ #color C 
+  scale_fill_paletteer_c("pals::ocean.balance")+ #color D
+  scale_y_discrete(limits=  rev(custom.order.mouse.ssGSEA))+ 
+  theme(legend.position="bottom", legend.justification = "center")+
+  theme(axis.line = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank()) +
+  theme(legend.title.align=0.5)+
+  labs(fill = "row z-scored\nNES")+ #legend title
+  ggtitle("ssGSEA\ncells expression") +
+  theme(plot.title = element_text(hjust = 0.5, face="bold", size=16)) + 
+  theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1))+ 
+  theme(axis.text.y= element_text(size=14))+  
+  xlab(NULL) + 
+  ylab(NULL) +
+  theme(axis.text.y=element_text(face= "plain", colour="black", size=8) )+
+  theme(axis.text.x = element_blank()) +
+  theme(axis.ticks.x = element_blank())+
+  
+  geom_vline(xintercept = c(4.5, 8.5, 12.5, 16.5) , size=1.0, linetype = "solid", color="white")+
+  annotate("text", x = 2.5, y = nrow(sign.ssGSEA.result)+2, label = "GFP", fontface = "bold", size=3)+
+  annotate("text", x = 6.5, y = nrow(sign.ssGSEA.result)+2, label = "FL", fontface = "bold", size=3)+
+  annotate("text", x = 10.5, y = nrow(sign.ssGSEA.result)+2, label = "dE18", fontface = "bold", size=3)+
+  annotate("text", x = 14.5, y = nrow(sign.ssGSEA.result)+2, label = "FL\nBicc1", fontface = "bold", size=3)+
+  annotate("text", x = 18.5, y = nrow(sign.ssGSEA.result)+2, label = "dE18\nBicc1", fontface = "bold", size=3)+
+  annotate("text", x = 3.5, y = nrow(sign.ssGSEA.result)+3.5, label = "",  color = "transparent")
+
+ggsave("cells.expr.ssGSEA.result.heatmap.pdf", useDingbats=FALSE,  width = 14, height =13, units = "cm") 
 
 
 

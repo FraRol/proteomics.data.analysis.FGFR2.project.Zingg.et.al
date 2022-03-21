@@ -591,7 +591,7 @@ glimpse(input.ssGSEA.3)
 
 
 # prepare gct file 
-gene.pattern.ssGSEA.input_GCT <-input.GSVA.ssGSEA.3[,c("GFP.1","GFP.2","GFP.3","GFP.4",  
+gene.pattern.ssGSEA.input_GCT <- input.ssGSEA.3[,c("GFP.1","GFP.2","GFP.3","GFP.4",  
                                                        "FL.1","FL.2","FL.3","FL.4",  
                                                        "dE18.1","dE18.2","dE18.3","dE18.4",  
                                                        "FL.Bicc1.1","FL.Bicc1.2","FL.Bicc1.3","FL.Bicc1.4",   
@@ -609,7 +609,7 @@ table(is.na(gene.pattern.ssGSEA.input_GCT))
 gene.pattern.ssGSEA.input_GCT[is.na(gene.pattern.ssGSEA.input_GCT)] <- 0 #impute missing values with zero
 
 
-rownames(gene.pattern.ssGSEA.input_GCT) <- input.GSVA.ssGSEA.3$PG.Genes.2 #add row names
+rownames(gene.pattern.ssGSEA.input_GCT) <- input.ssGSEA.3$PG.Genes.2 #add row names
 glimpse(gene.pattern.ssGSEA.input_GCT)
 
 
@@ -674,7 +674,7 @@ writeGMT <- function #Create a gmt (gene matrix transposed) file
 # stop define function
 
 
-writeGMT(pathway.list.with.ids, "msigdbr_mouse_hallmarks_.gmt")
+writeGMT(pathway.list.with.ids, "msigdbr_mouse_hallmarks.gmt")
 
 
 
@@ -706,7 +706,6 @@ ssGSEA_result.df$FL_dE18_t.test.pval.adj.BH <- p.adjust(ssGSEA_result.df$FL_dE18
 table(ssGSEA_result.df$FL_dE18_t.test.pval < 0.05)
 
 # change column names, filter sign. observations, 
-
 colnames(ssGSEA_result.df) <- c("pathways",                "Description",         "GFP.1",                "GFP.2" ,               "GFP.3",               
                           "GFP.4"     ,           "FL.1"   ,              "FL.2"  ,               "FL.3"   ,              "FL.4"   ,             
                           "dE18.1"   ,            "dE18.2"     ,          "dE18.3"      ,         "dE18.4"   ,            "FL.Bicc1.1"  ,        
@@ -771,8 +770,7 @@ melted.ssGSEA.result <- reshape2::melt(sign.ssGSEA.result %>% select("pathways",
                                                                      "dE18.Bicc1.1","dE18.Bicc1.2","dE18.Bicc1.3","dE18.Bicc1.4"))
 glimpse(melted.ssGSEA.result)
 
-#plot
-
+###plot
 ggplot(melted.ssGSEA.result, aes(x=variable, y=pathways, fill=value)) +  
   geom_tile() + 
   #scale_fill_gradient2(low = "blue", mid = "white",high = "red") + #color A
@@ -806,11 +804,65 @@ ggplot(melted.ssGSEA.result, aes(x=variable, y=pathways, fill=value)) +
   annotate("text", x = 18.5, y = nrow(sign.ssGSEA.result)+2, label = "dE18\nBicc1", fontface = "bold", size=3)+
   annotate("text", x = 3.5, y = nrow(sign.ssGSEA.result)+3.5, label = "",  color = "transparent")
 
-ggsave("cells.expr.ssGSEA.result.heatmap.pdf", useDingbats=FALSE,  width = 14, height =13, units = "cm") 
+#ggsave("cells.expr.ssGSEA.result.heatmap.pdf", useDingbats=FALSE,  width = 14, height =13, units = "cm") 
 
 
 
 
+
+
+
+
+
+
+
+
+
+##################################################################################################################################
+# > sessionInfo()
+# R version 4.1.2 (2021-11-01)
+# Platform: aarch64-apple-darwin20 (64-bit)
+# Running under: macOS Monterey 12.2.1
+# 
+# Matrix products: default
+# LAPACK: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/lib/libRlapack.dylib
+# 
+# locale:
+#   [1] de_DE.UTF-8/de_DE.UTF-8/de_DE.UTF-8/C/de_DE.UTF-8/de_DE.UTF-8
+# 
+# attached base packages:
+#   [1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+# 
+# other attached packages:
+#   [1] paletteer_1.4.0       gtools_3.9.2          msigdbr_7.4.1         cmapR_1.6.0           viridis_0.6.2        
+# [6] viridisLite_0.4.0     circlize_0.4.14       ComplexHeatmap_2.10.0 pbapply_1.5-0         data.table_1.14.2    
+# [11] forcats_0.5.1         stringr_1.4.0         dplyr_1.0.8           purrr_0.3.4           readr_2.1.2          
+# [16] tidyr_1.2.0           tibble_3.1.6          ggplot2_3.3.5         tidyverse_1.3.1      
+# 
+# loaded via a namespace (and not attached):
+#   [1] bitops_1.0-7                matrixStats_0.61.0          fs_1.5.2                    lubridate_1.8.0            
+# [5] doParallel_1.0.17           RColorBrewer_1.1-2          httr_1.4.2                  GenomeInfoDb_1.30.1        
+# [9] tools_4.1.2                 backports_1.4.1             utf8_1.2.2                  R6_2.5.1                   
+# [13] DBI_1.1.2                   BiocGenerics_0.40.0         colorspace_2.0-3            GetoptLong_1.0.5           
+# [17] withr_2.5.0                 tidyselect_1.1.2            gridExtra_2.3               compiler_4.1.2             
+# [21] cli_3.2.0                   rvest_1.0.2                 Biobase_2.54.0              xml2_1.3.3                 
+# [25] DelayedArray_0.20.0         prismatic_1.1.0             labeling_0.4.2              scales_1.1.1               
+# [29] digest_0.6.29               XVector_0.34.0              dichromat_2.0-0             pkgconfig_2.0.3            
+# [33] MatrixGenerics_1.6.0        maps_3.4.0                  dbplyr_2.1.1                rlang_1.0.2                
+# [37] GlobalOptions_0.1.2         readxl_1.3.1                pals_1.7                    flowCore_2.6.0             
+# [41] rstudioapi_0.13             farver_2.1.0                shape_1.4.6                 generics_0.1.2             
+# [45] jsonlite_1.8.0              RCurl_1.98-1.6              magrittr_2.0.2              GenomeInfoDbData_1.2.7     
+# [49] RProtoBufLib_2.6.0          Matrix_1.4-0                Rcpp_1.0.8.2                munsell_0.5.0              
+# [53] S4Vectors_0.32.3            fansi_1.0.2                 babelgene_21.4              lifecycle_1.0.1            
+# [57] stringi_1.7.6               SummarizedExperiment_1.24.0 zlibbioc_1.40.0             plyr_1.8.6                 
+# [61] parallel_4.1.2              crayon_1.5.0                lattice_0.20-45             haven_2.4.3                
+# [65] mapproj_1.2.8               hms_1.1.1                   pillar_1.7.0                GenomicRanges_1.46.1       
+# [69] rjson_0.2.21                reshape2_1.4.4              codetools_0.2-18            stats4_4.1.2               
+# [73] reprex_2.0.1                glue_1.6.2                  RcppParallel_5.1.5          BiocManager_1.30.16        
+# [77] modelr_0.1.8                png_0.1-7                   vctrs_0.3.8                 tzdb_0.2.0                 
+# [81] foreach_1.5.2               cellranger_1.1.0            gtable_0.3.0                rematch2_2.1.2             
+# [85] clue_0.3-60                 assertthat_0.2.1            broom_0.7.12                iterators_1.0.14           
+# [89] cytolib_2.6.2               IRanges_2.28.0              cluster_2.1.2               ellipsis_0.3.2 
 
 
 

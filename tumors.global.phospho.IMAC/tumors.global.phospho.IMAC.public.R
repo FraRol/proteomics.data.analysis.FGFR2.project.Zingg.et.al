@@ -148,7 +148,7 @@ glimpse(IMAC.tum.DZ)
 nrow(IMAC.tum.DZ) #29329
 ncol(IMAC.tum.DZ) #467
 colnames(IMAC.tum.DZ)
-length(unique(IMAC.tum.DZ$id)) #9329
+length(unique(IMAC.tum.DZ$id)) #29329
 
 ### select columns of interest
 IMAC.tum.DZ.2 <- IMAC.tum.DZ %>% select(

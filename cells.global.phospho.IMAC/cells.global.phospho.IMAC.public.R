@@ -1425,6 +1425,30 @@ custom.order.mouse.ssPTMSEA.plot.DZ.170122 <- c("PERT-PSP_SERUM",            "KI
                                                  "PERT-PSP_LPS")   
 custom.order.mouse.ssPTMSEA.plot.DZ.170122
 
+
+### z-score result
+
+#start define functions
+zscorescalebaseR<- function(x){
+  #arg <- c(1, 2, 3, 4, 5)
+  #temp <- (x-mean(x))/sd(x)
+  temp <- (x-mean(x))/sd(x)
+  return(temp)
+}
+x <- c(1, 2, 3, 4, 5); x
+zscorescalebaseR(x = x)
+mean(zscorescalebaseR(x = x))
+#stop define functions
+
+D <- sign.ss.PTMSEA.result %>% select(Norm.Intensity.A : Norm.Intensity.O)
+D <- t(apply(D,1, function(x) zscorescalebaseR(x = x)))
+
+sd(D[1,]) #should be 1
+
+DD <- as_tibble(D)
+
+sign.ss.PTMSEA.result <- bind_cols(sign.ss.PTMSEA.result %>% select(id), DD) #with z score
+
 #reshape
 #NES is named with Norm.Intensity.[...] here (the input column names)
 melted.ss.PTMSEA.result.18.01.22 <- reshape2::melt(sign.ss.PTMSEA.result %>% select("id",  "Norm.Intensity.A", "Norm.Intensity.F", "Norm.Intensity.K", "Norm.Intensity.P", 
@@ -1438,9 +1462,9 @@ glimpse(melted.ss.PTMSEA.result.18.01.22)
 ggplot(melted.ss.PTMSEA.result.18.01.22, aes(x=variable, y=id, fill=value)) +  
   geom_tile() + 
   #scale_fill_gradient2(low = "blue", mid = "white",high = "red") + #color A
-  scale_fill_gradient2(low = "blue", mid = "white",high = "darkred") + #color B
+  #scale_fill_gradient2(low = "blue", mid = "white",high = "darkred") + #color B
   #scale_fill_scico(palette = 'vikO',name="NES", na.value = "grey50")+ #color C 
-  #scale_fill_paletteer_c("pals::ocean.balance")+ #color D
+  scale_fill_paletteer_c("pals::ocean.balance")+ #color D
   scale_y_discrete(limits=  rev(custom.order.mouse.ssPTMSEA.plot.DZ.170122))+ 
   theme(legend.position="bottom", legend.justification = "center")+
   theme(axis.line = element_blank(),
@@ -1449,7 +1473,7 @@ ggplot(melted.ss.PTMSEA.result.18.01.22, aes(x=variable, y=id, fill=value)) +
         panel.border = element_blank(),
         panel.background = element_blank()) +
   theme(legend.title.align=0.5)+
-  labs(fill = "NES")+ #legend title
+  labs(fill = "row z-scored\nNES")+ #legend title
   ggtitle("ssPTM-SEA  \n mouse windows \n cells IMAC") +
   theme(plot.title = element_text(hjust = 0.5, face="bold", size=16)) + 
   theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1))+ 

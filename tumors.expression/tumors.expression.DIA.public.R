@@ -39,15 +39,9 @@ library(paletteer)
 ###################################################################################################################################
 ##############################################################################################################################################################
 
-### long report (FR PG level) no pivot style, WITH filter analysis review checked (yes, on) 8.11.2021 the one to go for
-#DZ.tumors.expr_V2 <- fread("/Users/frankrolfs/NLPostDR/VUmc OPL/Phosphoproteomics with Daniel Zingg NKI/mouse tumors/Zing.Fgfr2.tumors.expression.DIA/19.10.21_FR_Zingg_Fgfr2_tumors_DIA_analysis_with.MQ.direct.DIA.library_Report_PG_long_filter.analysis.review.xls",
-#                           integer64="numeric",
-#                           header=TRUE,
-#                           dec=","
-#)
 
-### load expresion data cells DIA Zingg
-#save(DZ.tumors.expr_V2, file="Zingg.tumors.expression.Spectronaut.report.long.Rdata")
+
+### load expresion data tumors
 load("Zingg.tumors.expression.Spectronaut.report.long.Rdata")
 
 glimpse(DZ.tumors.expr_V2) #188802

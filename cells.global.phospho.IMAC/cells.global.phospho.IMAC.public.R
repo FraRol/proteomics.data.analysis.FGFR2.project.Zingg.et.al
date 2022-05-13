@@ -126,7 +126,8 @@ PerseusPSexpand.17.02.21 <- function(DF1){
 # T	20	Fgfr2-dE18-Bicc1
 
 
-DZ.IMAC.MBR.ON <- fread("cells.IMAC_Phospho(STY)Sites.txt",integer64 = "numeric") 
+
+load("cells.IMAC_Phospho(STY)Sites.txt.Rdata")
 
 glimpse(DZ.IMAC.MBR.ON)
 

@@ -378,7 +378,6 @@ Heatmap(corr2,
 ### average technical replicates
 
 mtpl.candidates <- c("FGFR2_MOUSE",
-                     "BICC1_MOUSE",
                      "PAK1_MOUSE",  "PAXI_MOUSE",  "MP2K1_MOUSE", "MP2K2_MOUSE", "MK01_MOUSE",  "MK03_MOUSE",  "ERF_MOUSE",   "JUN_MOUSE",   "JUNB_MOUSE",  "GSK3B_MOUSE", "MAP1B_MOUSE",
                      "AKTS1_MOUSE", "ACLY_MOUSE",  "BAD_MOUSE",   "TBCD1_MOUSE", "FOXO3_MOUSE", 
                      "KS6A3_MOUSE", "RS6_MOUSE",   "IF4B_MOUSE",  "4EBP1_MOUSE", "PYR1_MOUSE",  "LARP1_MOUSE"

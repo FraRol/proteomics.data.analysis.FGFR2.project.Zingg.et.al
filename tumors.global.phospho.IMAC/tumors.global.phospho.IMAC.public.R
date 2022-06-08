@@ -1068,7 +1068,7 @@ glimpse(DZ.tum.IMAC_expanded_log2_normclass1.PS)
 
 #save data
 #save(DZ.tum.IMAC_expanded_log2_normclass1.PS, file="DZ.tum.IMAC_expanded_log2_normclass1.PS.Rdata")
-#load("DZ.tum.IMAC_expanded_log2_normclass1.PS")
+#load("DZ.tum.IMAC_expanded_log2_normclass1.PS.Rdata")
 #glimpse(DZ.tum.IMAC_expanded_log2_normclass1.PS)
 
 
@@ -2299,7 +2299,7 @@ G1and3_G2_Limma.2gc <- DZ.tum.IMAC_expanded_log2_normclass1.PS_for.L.sep.2.group
                                                                                                  
 )
 
-#extend data apresence calculation
+#extend data presence calculation
 G1and3_G2_Limma.2gc$data.presence.all <- G1and3_G2_Limma.2gc$data.presence.Group.1 + G1and3_G2_Limma.2gc$data.presence.Group.3 + G1and3_G2_Limma.2gc$data.presence.Group.2
 G1and3_G2_Limma.2gc$data.presence.Group.1and3 <- G1and3_G2_Limma.2gc$data.presence.Group.1 + G1and3_G2_Limma.2gc$data.presence.Group.3
 glimpse(G1and3_G2_Limma.2gc)
@@ -3289,7 +3289,7 @@ print(facet.hm.plot %>% group_by(KinGene) %>% summarize(count = n()) %>% arrange
 #define order via number of substrates per upstream kinase
 order.upstreamKin.via.num.subs <- facet.hm.plot %>% group_by(KinGene) %>% summarize(count = n()) %>% arrange(desc(count)) %>% select(KinGene) %>% pull()
 order.upstreamKin.via.num.subs
-order.upstreamKin.via.num.subs[1] #the kinase with the highes substrates here: Mapk1
+order.upstreamKin.via.num.subs[1] #the kinase with the highest substrates here: Mapk1
 
 # remove duplicate PS per upstream Kinase start with Kinase that has highest substrate number
 glimpse(facet.hm.plot)
@@ -3906,30 +3906,323 @@ glimpse(gene.pattern.PTM.SEA.input_GCT.2)
 write_gct(gene.pattern.PTM.SEA.input_GCT.2, "DZ.tumors.IMAC.mouse.windows.G2_G4.PTMSEA.input.gct")
 
 
+
+
+
+
+
+
+#####################################################################################################################################
+#####################################################################################################################################
+###G1+G3 vs G2+4 tumors IMAC: additional 2 group comparison for classic PTMSEA with Limma
+
+#Group 1
+#"1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",
+
+#Group 2
+#"4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+
+#Group 3
+#"7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2",
+
+#Group 4
+#"15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2",
+
+glimpse(DZ.tum.IMAC_expanded_log2_normclass1.PS_for.L.sep.2.group.comp)
+
+G1andG3_G2andG4_Limma.2gc <- DZ.tum.IMAC_expanded_log2_normclass1.PS_for.L.sep.2.group.comp %>% select("ID.FR.all.C1.PS",
+                                                                                                       "id",                          "Proteins",                    "Positions.within.proteins",   "Leading.proteins",            "Protein",                    
+                                                                                                       "Protein.names",               "Gene.names",                  "Fasta.headers",               "Localization.prob",           "Number.of.Phospho.(STY)",    
+                                                                                                       "Amino.acid",                  "Sequence.window",             "Phospho.(STY).Probabilities", "Position.in.peptide",         "Reverse",                    
+                                                                                                       "Potential.contaminant",       "Positions",                   "Position",                    "Peptide.IDs",                 "Mod..peptide.IDs",   
+                                                                                                       "PS_Multiplicity", "Prot.Name_AApos", "Gene.Name_AApos",
+                                                                                                       
+                                                                                                       #Group 1
+                                                                                                       "1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",
+                                                                                                       #Group 3
+                                                                                                       "7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2",
+                                                                                                       
+                                                                                                       #Group 2
+                                                                                                       "4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+                                                                                                       #Group 4
+                                                                                                       "15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2",
+                                                                                                       
+                                                                                                       data.presence.Group.1,
+                                                                                                       data.presence.Group.3,
+                                                                                                       
+                                                                                                       data.presence.Group.2,
+                                                                                                       data.presence.Group.4
+                                                                                                       
+)
+
+#extend data presence calculation
+G1andG3_G2andG4_Limma.2gc$data.presence.all <- G1andG3_G2andG4_Limma.2gc$data.presence.Group.1 + G1andG3_G2andG4_Limma.2gc$data.presence.Group.3 + G1andG3_G2andG4_Limma.2gc$data.presence.Group.2 + G1andG3_G2andG4_Limma.2gc$data.presence.Group.4
+G1andG3_G2andG4_Limma.2gc$data.presence.Group.1and3 <- G1andG3_G2andG4_Limma.2gc$data.presence.Group.1 + G1andG3_G2andG4_Limma.2gc$data.presence.Group.3
+G1andG3_G2andG4_Limma.2gc$data.presence.Group.2and4 <- G1andG3_G2andG4_Limma.2gc$data.presence.Group.2 + G1andG3_G2andG4_Limma.2gc$data.presence.Group.4
+glimpse(G1andG3_G2andG4_Limma.2gc)
+
+#remove complete zero rows
+table(G1andG3_G2andG4_Limma.2gc$data.presence.all == 0) #F19424 T772
+
+G1andG3_G2andG4_Limma.2gc <- G1andG3_G2andG4_Limma.2gc %>% filter(data.presence.all > 0)
+nrow(G1andG3_G2andG4_Limma.2gc) #19424
+
+## X out of Y filter 
+#Group 1+3: 4+6=10 samples => 50% => 5 samples => 6 samples
+#Group 2+4: 11+8=19 samples => 50% => 9.5 samples => 9 samples
+glimpse(G1andG3_G2andG4_Limma.2gc)
+temp.left <- filter(G1andG3_G2andG4_Limma.2gc, data.presence.Group.1and3 >= 6) ; nrow(temp.left)    #5594
+temp.right <- filter(G1andG3_G2andG4_Limma.2gc, data.presence.Group.2and4 >= 9) ; nrow(temp.right) #7095 
+
+temp.left.and.right <- bind_rows(temp.left , temp.right) ; nrow(temp.left.and.right)
+temp.left.and.right <- distinct(temp.left.and.right) ; nrow(temp.left.and.right) #7526
+
+G1andG3_G2andG4_Limma.2gc.XYfilter <- temp.left.and.right
+nrow(G1andG3_G2andG4_Limma.2gc.XYfilter) #7526
+length(unique(G1andG3_G2andG4_Limma.2gc.XYfilter$Prot.Name_AApos)) #6792
+
+#add FRID
+G1andG3_G2andG4_Limma.2gc.XYfilter$FRID <- 1:nrow(G1andG3_G2andG4_Limma.2gc.XYfilter) #here FRID is also row number
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter)
+
+#find likely Limma NA pval situations 
+#Group 1and3 90% => 9 samples
+#Group 2 90% => 17 samples
+possible.NApvals.A <- G1andG3_G2andG4_Limma.2gc.XYfilter %>% filter((data.presence.Group.1and3  >= 9 & data.presence.Group.2and4  == 0) | (data.presence.Group.1and3  == 0 & data.presence.Group.2  >= 17)  )
+
+glimpse(possible.NApvals.A)
+length(unique(possible.NApvals.A$FRID))
+FRIDS.possible.NApvals <- possible.NApvals.A$FRID
+FRIDS.possible.NApvals 
+
+# for these filtered  black and white situation add zero so that p.val can be calculated
+W <- G1andG3_G2andG4_Limma.2gc.XYfilter[FRIDS.possible.NApvals, ]
+glimpse(W)
+W <- W %>% mutate_at(vars(
+  #Group 1
+  "1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",
+  #Group 3
+  "7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2",
+  
+  #Group 2
+  "4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+  #Group 4
+  "15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2"),
+  ~replace(., is.na(.), 0))
+glimpse(W)
+
+#combine again
+G1andG3_G2andG4_Limma.2gc.XYfilter.2 <- G1andG3_G2andG4_Limma.2gc.XYfilter %>% filter(! FRID %in% FRIDS.possible.NApvals ) 
+G1andG3_G2andG4_Limma.2gc.XYfilter.2 <- bind_rows(G1andG3_G2andG4_Limma.2gc.XYfilter.2, W)
+G1andG3_G2andG4_Limma.2gc.XYfilter.2 <- G1andG3_G2andG4_Limma.2gc.XYfilter.2 %>% arrange(FRID)
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2)
+table(duplicated(G1andG3_G2andG4_Limma.2gc.XYfilter.2$FRID))
+
+##Limma statistics
+#get data 
+data.for.limma <- G1andG3_G2andG4_Limma.2gc.XYfilter.2 %>% select(
+  #Group 1
+  "1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",
+  #Group 3
+  "7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2",
+  
+  #Group 2
+  "4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+  #Group 4
+  "15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2"
+)
+rownames(data.for.limma) <- paste0(G1andG3_G2andG4_Limma.2gc.XYfilter.2$ID.FR.all.C1.PS, "__", G1andG3_G2andG4_Limma.2gc.XYfilter.2$Gene.Name_AApos) 
+nrow(data.for.limma)
+glimpse(data.for.limma)
+
+library(limma)
+design <- cbind(left=c(rep(1, 10), rep(0, 19)), right=c(rep(0,10), rep(1, 19))); design
+fit <- lmFit(data.for.limma, design) # Warning: Partial NA coefficients for 46 probe(s) 
+cont.matrix <- makeContrasts( left.vs.right =  right - left, levels=design) 
+fit2 <- contrasts.fit(fit, cont.matrix)
+fit2 <- eBayes(fit2)
+topTable(fit2, adjust="BH")
+
+Limma.p.value <- as.numeric(fit2$p.value)
+glimpse(Limma.p.value)
+Limma.adj.p.valueBH <- p.adjust(Limma.p.value, "BH") # adjust p value with BH #https://www.r-bloggers.com/example-9-30-addressing-multiple-comparisons/
+glimpse(Limma.adj.p.valueBH)
+Limma.t <- as.numeric(fit2$t)
+glimpse(Limma.t)
+
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B <- G1andG3_G2andG4_Limma.2gc.XYfilter.2
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$Limma.p.value <- as.numeric(Limma.p.value)
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$Limma.adj.p.valueBH <- as.numeric(Limma.adj.p.valueBH)
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$Limma.t <- as.numeric(Limma.t)
+
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B)
+
+
+#calculate FC
+for(i in 1:nrow(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B)){
+  print(i)
+  #i=250
+  leftvals <- as.numeric(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B[i,c("1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",     "7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2")]); leftvals #
+  rightvals <- as.numeric(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B[i,c("4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+                                                                     "15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2")]); rightvals #
+  
+  FC <- FR_FC_LOGData_2.3.17(control = leftvals, treatment = rightvals, LOGtype = 2); FC
+  
+  G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR[i] <- FC
+}
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B)
+
+#check numbers unique Sequence.window
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B)#6226
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B %>% filter(Limma.p.value < 0.05) %>% select(Sequence.window) %>% distinct() %>% nrow() #918 total sign
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B %>% filter(Limma.p.value < 0.05) %>% filter(FC_FR > 1) %>% select(Sequence.window) %>% distinct() %>% nrow() #582 up
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B %>% filter(Limma.p.value < 0.05) %>% filter(FC_FR < 1) %>% select(Sequence.window) %>% distinct() %>% nrow() #336 down
+
+# filter na pvalues
+table(is.na(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$Limma.p.value))
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B <- G1andG3_G2andG4_Limma.2gc.XYfilter.2.B %>% filter(!is.na(Limma.p.value))
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B) #7382
+table(is.na(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$Limma.p.value))
+
+#check +/- 10000 FCs
+table(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR >= 10000) #0
+table(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR <= -10000) #0
+summary(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR)
+
+#find second min or max and add +/-5 for +/- 10000 FCs
+temp <- G1andG3_G2andG4_Limma.2gc.XYfilter.2.B %>% filter(!FC_FR %in% c(10000, -10000)) %>% arrange(desc(FC_FR))
+head(temp$FC_FR)
+tail(temp$FC_FR)
+max(temp$FC_FR)
+min(temp$FC_FR)
+
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR <- replace(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR, G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR==10000, max(temp$FC_FR)+5)
+G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR <- replace(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR, G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR==-10000, min(temp$FC_FR)-5)
+summary(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B$FC_FR)
+glimpse(G1andG3_G2andG4_Limma.2gc.XYfilter.2.B) #7480
+
+
+
+##G1andG3_G2andG4_Limma.2gc.XYfilter.2.B reshape for classic PTMSEA
+#mouse windows
+G1andG3_G2andG4_PTMSEA <- G1andG3_G2andG4_Limma.2gc.XYfilter.2.B
+glimpse(G1andG3_G2andG4_PTMSEA)
+
+# make aa15.window
+# take first entry sequence window if there are two entries
+G1andG3_G2andG4_PTMSEA$aa15.window <- pbsapply(G1andG3_G2andG4_PTMSEA$Sequence.window, function(x) unlist(str_split(string =x, pattern = ";"))[1]  )
+G1andG3_G2andG4_PTMSEA$aa15.window <- pbsapply(G1andG3_G2andG4_PTMSEA$aa15.window, function(x) make.aa.15.window.from.31.sequence.window(input = x)  )
+glimpse(G1andG3_G2andG4_PTMSEA)
+
+table(duplicated(G1andG3_G2andG4_PTMSEA$aa15.window))
+which(duplicated(G1andG3_G2andG4_PTMSEA$aa15.window))
+
+
+#remove duplicated amino acid windows 
+##if there are duplicate entries (e.g. because of _1_2_3) take the entry with the best p-value
+unique.15aa.windows <- unique(G1andG3_G2andG4_PTMSEA$aa15.window)
+glimpse(unique.15aa.windows) #6721
+
+
+G1andG3_G2andG4_PTMSEA.2 <- c()
+for (i in unique.15aa.windows){
+  print(i)
+  temp <- G1andG3_G2andG4_PTMSEA %>% filter(aa15.window %in% c(i))
+  temp <- temp %>% arrange(Limma.p.value)
+  temp <- temp[1,]
+  G1andG3_G2andG4_PTMSEA.2 <- bind_rows(G1andG3_G2andG4_PTMSEA.2, temp)
+}
+
+glimpse(G1andG3_G2andG4_PTMSEA.2)
+table(duplicated(G1andG3_G2andG4_PTMSEA.2$aa15.window))
+
+#order according to signed , (log-transformed) pvalue
+G1andG3_G2andG4_PTMSEA.2$signFC_FR <- sign(G1andG3_G2andG4_PTMSEA.2$FC_FR)
+G1andG3_G2andG4_PTMSEA.2$neg.log10.p <- -log10(G1andG3_G2andG4_PTMSEA.2$Limma.p.value)
+G1andG3_G2andG4_PTMSEA.2$rank.metric <- G1andG3_G2andG4_PTMSEA.2$neg.log10.p * G1andG3_G2andG4_PTMSEA.2$signFC_FR
+glimpse(G1andG3_G2andG4_PTMSEA.2) 
+table(is.na(G1andG3_G2andG4_PTMSEA.2$rank.metric))
+
+G1andG3_G2andG4_PTMSEA.2 <- G1andG3_G2andG4_PTMSEA.2 %>% arrange(desc(rank.metric))
+head(G1andG3_G2andG4_PTMSEA.2$FC_FR)
+tail(G1andG3_G2andG4_PTMSEA.2$FC_FR)
+
+# add_p to end of 15aa window
+G1andG3_G2andG4_PTMSEA.2$aa15.window.2 <- paste0(G1andG3_G2andG4_PTMSEA.2$aa15.window, "-p")
+glimpse(G1andG3_G2andG4_PTMSEA.2) 
+
+
+###
+#save(G1andG3_G2andG4_PTMSEA.2, file = "G1andG3_G2andG4.classic.PTMSEA.Rdata")
+glimpse(G1andG3_G2andG4_PTMSEA.2) 
+
+gene.pattern.PTM.SEA.input <- G1andG3_G2andG4_PTMSEA.2 %>% select(aa15.window.2, 
+                                                                  #Group 1
+                                                                  "1_Fgfr2","2_Fgfr2", "13_Fgfr2-Ate1","14_Fgfr2-Ate1",
+                                                                  #Group 3
+                                                                  "7_Fgfr2-Bicc1","8_Fgfr2-Bicc1","9_Fgfr2-Bicc1","17_Fgfr2-Tacc2","18_Fgfr2-Tacc2","19_Fgfr2-Tacc2",
+                                                                  
+                                                                  #Group 2
+                                                                  "4_Fgfr2-dE18","5_Fgfr2-dE18","6_Fgfr2-dE18","23_Fgfr2-dE18-IGR1","24_Fgfr2-dE18-IGR1","25_Fgfr2-dE18-IGR2","26_Fgfr2-dE18-IGR2","29_Fgfr2-E18-C3","30_Fgfr2-E18-C3","31_Fgfr2-E18-C4","32_Fgfr2-E18-C4",
+                                                                  #Group 4
+                                                                  "15_Fgfr2-dE18-Ate1","16_Fgfr2-dE18-Ate1","10_Fgfr2-dE18-Bicc1","11_Fgfr2-dE18-Bicc1","12_Fgfr2-dE18-Bicc1","20_Fgfr2-dE18-Tacc2","21_Fgfr2-dE18-Tacc2","22_Fgfr2-dE18-Tacc2",
+                                                                  
+                                                                  "rank.metric")
+glimpse(gene.pattern.PTM.SEA.input)
+nrow(gene.pattern.PTM.SEA.input) #6721
+
+nrow(filter(gene.pattern.PTM.SEA.input, !is.na(rank.metric)))
+
+
+
+library(cmapR)
+??cmapR
+
+#make GCT object with cmapR
+gene.pattern.PTM.SEA.input_GCT <- as.matrix(gene.pattern.PTM.SEA.input[,"rank.metric"])
+glimpse(gene.pattern.PTM.SEA.input_GCT)
+colnames(gene.pattern.PTM.SEA.input_GCT) <- "rank.metric"
+rownames(gene.pattern.PTM.SEA.input_GCT) <- gene.pattern.PTM.SEA.input$aa15.window.2
+glimpse(gene.pattern.PTM.SEA.input_GCT)
+
+gene.pattern.PTM.SEA.input_GCT.2 <- new("GCT", mat=gene.pattern.PTM.SEA.input_GCT)
+glimpse(gene.pattern.PTM.SEA.input_GCT.2)
+
+#save GCT file for PTMSEA input
+#write_gct(gene.pattern.PTM.SEA.input_GCT.2, "DZ.tumors.IMAC.mouse.windows.G1andG3_G2andG4.PTMSEA.input.gct")
+
+
+
+
 #####################################################################################################################################################################
 #####################################################################################################################################################################
 ### tumor IMAC: analyze and result classic PTM-SEA obtained via gene pattern
 
 ## load corresponding data an plot, repeat with remaining results, change plot titles etc. accordingly
 
-##mouse windows 
-##DZ tumors IMAC G1+G3 vs G2 classic PTMSEA  
-#dz.tum..PTMSEA <- fread("DZ.tumors.mouse.G1and3_G2.PTMSEA-combined.txt")
-#nrow(dz.tum..PTMSEA) #30
-#glimpse(dz.tum..PTMSEA)
+#mouse windows
+#DZ tumors IMAC G1+G3 vs G2 classic PTMSEA
+dz.tum..PTMSEA <- fread("DZ.tumors.mouse.G1and3_G2.PTMSEA-combined.txt")
+nrow(dz.tum..PTMSEA) #30
+glimpse(dz.tum..PTMSEA)
 
-##mouse windows 
-##DZ tumors IMAC G1+G3 vs G4 classic PTMSEA  
-#dz.tum..PTMSEA <- fread("/Users/frankrolfs/NLPostDR/VUmc OPL/Phosphoproteomics with Daniel Zingg NKI/mouse tumors/IMAC.mouse.tumors.DZ/DZ.tumors.IMAC.classicPTMSEA/G1andG3_G4/403670/11.01.22.DZ.tumors.IMAC.mouse.windows.G1andG3_G4.PTMSEA.input-combined.txt")
-#nrow(dz.tum..PTMSEA)
-#glimpse(dz.tum..PTMSEA)
+#mouse windows
+#DZ tumors IMAC G1+G3 vs G2+G4 classic PTMSEA
+dz.tum..PTMSEA <- fread("DZ.tumors.IMAC.mouse.windows.G1andG3_G2andG4.PTMSEA.input-combined.txt")
+nrow(dz.tum..PTMSEA) #29
+glimpse(dz.tum..PTMSEA)
 
+# #mouse windows
+# #DZ tumors IMAC G1+G3 vs G4 classic PTMSEA
+# dz.tum..PTMSEA <- fread("DZ.tumors.IMAC.mouse.windows.G1andG3_G4.PTMSEA.input-combined.txt")
+# nrow(dz.tum..PTMSEA)
+# glimpse(dz.tum..PTMSEA)
 
 ##mouse windows 
 ##DZ tumors IMAC G2 vs G4 classic PTMSEA  
-dz.tum..PTMSEA <- fread("/Users/frankrolfs/NLPostDR/VUmc OPL/Phosphoproteomics with Daniel Zingg NKI/mouse tumors/IMAC.mouse.tumors.DZ/DZ.tumors.IMAC.classicPTMSEA/G2_G4/403614/11.01.22.DZ.tumors.IMAC.mouse.G2_G4.PTMSEA-combined.txt")
-nrow(dz.tum..PTMSEA)
-glimpse(dz.tum..PTMSEA)
+#dz.tum..PTMSEA <- fread("DZ.tumors.IMAC.mouse.G2_G4.PTMSEA-combined.txt")
+#nrow(dz.tum..PTMSEA)
+#glimpse(dz.tum..PTMSEA)
 
 
 # reshape data
@@ -3959,9 +4252,11 @@ ggplot() +
   theme(axis.text.x = element_text(size = 16))+
   theme(axis.text.y = element_text(size = 16))+ 
  
-  #ggtitle("tumors IMAC \n G1andG3 vs. G2 PTM-SEA \n mouse windows")+
-  #ggtitle("tumors IMAC \n G1+G3 vs. G4 PTM-SEA \n mouse windows")+
-  ggtitle("tumors IMAC \n G2 vs. G4 PTM-SEA \n mouse windows")+
+  #ggtitle("tumors IMAC \n G1+G3 vs. G2 PTM-SEA \n mouse windows")+ 
+  ggtitle("tumors IMAC \n G1+G3 vs. G2+G4 PTM-SEA \n mouse windows")+ 
+  
+  ##ggtitle("tumors IMAC \n G1+G3 vs. G4 PTM-SEA \n mouse windows")+
+  ##ggtitle("tumors IMAC \n G2 vs. G4 PTM-SEA \n mouse windows")+
  
   theme(legend.position = "right")+
   theme(axis.text.x = element_text(size = 14)) +
@@ -3972,11 +4267,64 @@ ggplot() +
 
 #ggsave("Fgfr2.tumors.G1andG3.vs.G2.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
 
-#ggsave("Fgfr2.tumors.G1andG3.vs.G4.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
+#ggsave("Fgfr2.tumors.G1andG3.vs.G2andG4.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
 
-#ggsave("Fgfr2.tumors.G2.vs.G4.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
+##ggsave("Fgfr2.tumors.G1andG3.vs.G4.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
+##ggsave("Fgfr2.tumors.G2.vs.G4.PTMSEA.mouse.version.no.filters.pdf", useDingbats=FALSE,  width = 20, height = 15, units = "cm") 
 
 
+##################################################################################################################################################
+##################################################################################################################################################
+##################################################################################################################################################
+##################################################################################################################################################
+
+# > sessionInfo()
+# R version 4.1.2 (2021-11-01)
+# Platform: aarch64-apple-darwin20 (64-bit)
+# Running under: macOS Monterey 12.3.1
+# 
+# Matrix products: default
+# LAPACK: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/lib/libRlapack.dylib
+# 
+# locale:
+#   [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+# 
+# attached base packages:
+#   [1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+# 
+# other attached packages:
+#   [1] limma_3.50.1          scico_1.3.0           readxl_1.3.1          splitstackshape_1.4.8 reshape2_1.4.4       
+# [6] paletteer_1.4.0       gtools_3.9.2          msigdbr_7.4.1         cmapR_1.6.0           viridis_0.6.2        
+# [11] viridisLite_0.4.0     circlize_0.4.14       ComplexHeatmap_2.10.0 pbapply_1.5-0         data.table_1.14.2    
+# [16] forcats_0.5.1         stringr_1.4.0         dplyr_1.0.8           purrr_0.3.4           readr_2.1.2          
+# [21] tidyr_1.2.0           tibble_3.1.6          ggplot2_3.3.5         tidyverse_1.3.1      
+# 
+# loaded via a namespace (and not attached):
+#   [1] colorspace_2.0-3            rjson_0.2.21                ellipsis_0.3.2              cytolib_2.6.2              
+# [5] XVector_0.34.0              GenomicRanges_1.46.1        GlobalOptions_0.1.2         fs_1.5.2                   
+# [9] dichromat_2.0-0             clue_0.3-60                 rstudioapi_0.13             farver_2.1.0               
+# [13] fansi_1.0.2                 lubridate_1.8.0             xml2_1.3.3                  codetools_0.2-18           
+# [17] sparseMatrixStats_1.6.0     doParallel_1.0.17           jsonlite_1.8.0              broom_0.7.12               
+# [21] cluster_2.1.2               dbplyr_2.1.1                png_0.1-7                   mapproj_1.2.8              
+# [25] BiocManager_1.30.16         compiler_4.1.2              httr_1.4.2                  backports_1.4.1            
+# [29] assertthat_0.2.1            Matrix_1.4-0                fastmap_1.1.0               lazyeval_0.2.2             
+# [33] cli_3.2.0                   htmltools_0.5.2             tools_4.1.2                 gtable_0.3.0               
+# [37] glue_1.6.2                  GenomeInfoDbData_1.2.7      maps_3.4.0                  Rcpp_1.0.8.3               
+# [41] Biobase_2.54.0              cellranger_1.1.0            vctrs_0.3.8                 babelgene_21.4             
+# [45] iterators_1.0.14            DelayedMatrixStats_1.16.0   rvest_1.0.2                 lifecycle_1.0.1            
+# [49] zlibbioc_1.40.0             scales_1.1.1                RProtoBufLib_2.6.0          hms_1.1.1                  
+# [53] MatrixGenerics_1.6.0        parallel_4.1.2              SummarizedExperiment_1.24.0 rematch2_2.1.2             
+# [57] RColorBrewer_1.1-2          prismatic_1.1.0             gridExtra_2.3               stringi_1.7.6              
+# [61] S4Vectors_0.32.3            foreach_1.5.2               flowCore_2.6.0              BiocGenerics_0.40.0        
+# [65] shape_1.4.6                 GenomeInfoDb_1.30.1         pals_1.7                    rlang_1.0.2                
+# [69] pkgconfig_2.0.3             matrixStats_0.61.0          bitops_1.0-7                lattice_0.20-45            
+# [73] htmlwidgets_1.5.4           labeling_0.4.2              tidyselect_1.1.2            plyr_1.8.6                 
+# [77] magrittr_2.0.2              R6_2.5.1                    IRanges_2.28.0              generics_0.1.2             
+# [81] DelayedArray_0.20.0         DBI_1.1.2                   pillar_1.7.0                haven_2.4.3                
+# [85] withr_2.5.0                 RCurl_1.98-1.6              modelr_0.1.8                crayon_1.5.0               
+# [89] utf8_1.2.2                  plotly_4.10.0               tzdb_0.2.0                  GetoptLong_1.0.5           
+# [93] reprex_2.0.1                digest_0.6.29               RcppParallel_5.1.5          stats4_4.1.2               
+# [97] munsell_0.5.0  
 
 
 
